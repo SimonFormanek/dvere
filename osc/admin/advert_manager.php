@@ -134,6 +134,10 @@
             $messageStack->add_session(SUCCESS_IMAGE_UPDATED, 'success');
           }
 
+          if ($action == 'insert' || $action == 'update') {
+      shell_exec("img2webp -d 3300 -loop 0 -lossy -q 50 ../images/IMG_* -o ../images/rotator.webp");
+          }
+
           foreach (tep_get_languages() as $l) {
             $lng_data_array['advert_html_text'] = Text::prepare($_POST['advert_html_text'][$l['id']]);
 
@@ -149,7 +153,6 @@
           }
 
           $OSCOM_Hooks->call('advert_manager', 'insertUpdateAction');
-
           tep_redirect(tep_href_link('advert_manager.php', (isset($_GET['page']) ? 'page=' . (int)$_GET['page'] . '&' : '') . 'cID=' . $advert_id));
         } else {
           $action = 'new';
